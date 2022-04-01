@@ -1,6 +1,6 @@
 {
   "name": "better-timeout",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Better Timeout for easy handling in Node.js developed in TypeScript.",
   "type": "module",
   "engines": {
@@ -25,9 +25,8 @@
     "start": "node build/src/main.js",
     "clean": "rimraf coverage build tmp",
     "prebuild": "npm run lint",
-    "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -w -p tsconfig.json",
-    "build:release": "npm run clean && tsc -p tsconfig.release.json",
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -w -p tsconfig.build.json",
     "lint": "eslint . --ext .ts",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
@@ -39,5 +38,10 @@
   },
   "volta": {
     "node": "16.13.0"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ]
 }
