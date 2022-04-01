@@ -1,7 +1,7 @@
 {
-  "name": "better-timeout",
+  "name": "simple-timeout",
   "version": "0.1.0",
-  "description": "Better Timeout for easy handling in Node.js developed in TypeScript.",
+  "description": "Simple timeout for easy handling in Node.js developed in TypeScript.",
   "type": "module",
   "engines": {
     "node": ">= 16.13.0 <17"

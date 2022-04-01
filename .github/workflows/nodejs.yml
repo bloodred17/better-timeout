@@ -18,6 +18,6 @@ jobs:
       env:
         CI: true
 #    - run: mv ./library.json ./dist/package.json
-    - uses: JS-DevTools/npm-publish@v1
-      with:
-        token: ${{ secrets.NPM_TOKEN }}
+#    - uses: JS-DevTools/npm-publish@v1
+#      with:
+#        token: ${{ secrets.NPM_TOKEN }}
