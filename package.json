@@ -1,10 +1,10 @@
 {
-  "name": "node-typescript-boilerplate",
+  "name": "better-timeout",
   "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "description": "Better Timeout for easy handling in Node.js developed in TypeScript.",
   "type": "module",
   "engines": {
-    "node": ">= 16.13 <17"
+    "node": ">= 16.13.0 <17"
   },
   "devDependencies": {
     "@types/jest": "~27.4",
@@ -32,7 +32,7 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
+  "author": "Ankur Dutta <bloodred17@users.noreply.github.com>",
   "license": "Apache-2.0",
   "dependencies": {
     "tslib": "~2.3.1"

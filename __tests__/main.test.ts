@@ -1,42 +1,58 @@
-import { Delays, greeter } from '../src/main';
+import { Timeout } from '../src/main';
 
-describe('greeter function', () => {
-  const name = 'John';
-  let hello: string;
-
-  let timeoutSpy: jest.SpyInstance;
+describe('Timeout instance', () => {
+  let defaultTimeout: Timeout;
 
   // Act before assertions
   beforeAll(async () => {
-    // Read more about fake timers
-    // http://facebook.github.io/jest/docs/en/timer-mocks.html#content
-    // Jest 27 now uses "modern" implementation of fake timers
-    // https://jestjs.io/blog/2021/05/25/jest-27#flipping-defaults
-    // https://github.com/facebook/jest/pull/5171
-    jest.useFakeTimers();
-    timeoutSpy = jest.spyOn(global, 'setTimeout');
-
-    const p: Promise<string> = greeter(name);
-    jest.runOnlyPendingTimers();
-    hello = await p;
+    defaultTimeout = new Timeout(5000, {
+      timeoutMessage: 'Test timeout',
+      callbackFn: (timeoutMessage: string) => {
+        console.log('Callback is called with message: ' + timeoutMessage);
+      }
+    });
   });
 
-  // Teardown (cleanup) after assertions
+  // // Teardown (cleanup) after assertions
   afterAll(() => {
-    timeoutSpy.mockRestore();
+    console.log(defaultTimeout.status);
   });
 
   // Assert if setTimeout was called properly
-  it('delays the greeting by 2 seconds', () => {
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-    expect(setTimeout).toHaveBeenLastCalledWith(
-      expect.any(Function),
-      Delays.Long,
-    );
+  it('should switch default timeout status to \'set\'', () => {
+    expect(defaultTimeout.status).toBe('set');
   });
 
-  // Assert greeter result
-  it('greets a user with `Hello, {name}` message', () => {
-    expect(hello).toBe(`Hello, ${name}`);
+  it('should resolve after a set duration with default option', async () => {
+    const timeout = new Timeout(2000);
+    const result = await timeout.onResolve();
+    expect(result).toBe('TIMEOUT');
+  });
+
+  it('should clear timeout before it is triggered', () => {
+    const timeout = new Timeout(2000);
+    expect(timeout.status).toBe('set');
+    timeout.clear();
+    expect(timeout.status).toBe('cleared');
+  });
+
+  it('should trigger the callback when timed out', async () => {
+    const timeoutMessage = 'Timed Out!';
+    const timeout = new Timeout(2000, {
+      timeoutMessage,
+      callbackFn: (message: string) => {
+        expect(message).toBe(timeoutMessage);
+      }
+    });
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    await delay(3000);
+    await expect(timeout.status).toBe('triggered');
+  });
+
+  it('should trigger the callback when cleared', () => {
+    const timeout = new Timeout(2000);
+    timeout.clear(() => {
+      expect(timeout.status).toBe('cleared');
+    });
   });
 });
