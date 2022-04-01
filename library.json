@@ -1,10 +1,5 @@
 {
-  "name": "better-timeout",
-  "version": "0.1.0",
-  "description": "Better Timeout for easy handling in Node.js developed in TypeScript.",
   "main": "./main.js",
   "types": "./main.d.ts",
-  "files": [
-    "/."
-  ]
+  "files": ["./"]
 }

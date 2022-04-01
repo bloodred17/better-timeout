@@ -1,10 +1,48 @@
 {
   "name": "simple-timeout",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Simple timeout for easy handling in Node.js developed in TypeScript.",
+  "keywords": [
+    "timeout",
+    "simple timeout",
+    "simple-timeout",
+    "simpletimeout"
+  ],
+  "homepage": "https://github.com/bloodred17/simple-timeout#readme",
+  "bugs": {
+    "url" : "https://github.com/bloodred17/simple-timeout/issues",
+    "email" : "ankur@shipthis.co"
+  },
+  "license": "Apache-2.0",
+  "author": "Ankur Dutta <ankur@shipthis.co>",
+  "contributors": [
+    {
+      "name": "bloodred17",
+      "email": "ankur.611@gmail.com",
+      "url": "https://ankurdutta.me"
+    }
+  ],
   "type": "module",
   "engines": {
-    "node": ">= 16.13.0 <17"
+    "node": ">= 14.15.0 <17"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bloodred17/simple-timeout.git"
+  },
+  "scripts": {
+    "start": "node build/src/main.js",
+    "clean": "rimraf coverage build tmp",
+    "prebuild": "npm run lint",
+    "build": "tsc -p tsconfig.build.json",
+    "postbuild": "node pre-publish",
+    "build:watch": "tsc -w -p tsconfig.build.json",
+    "lint": "eslint . --ext .ts",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "tslib": "~2.3.1"
   },
   "devDependencies": {
     "@types/jest": "~27.4",
@@ -20,21 +58,6 @@
     "ts-jest": "~27.1",
     "tsutils": "~3.21",
     "typescript": "~4.6"
-  },
-  "scripts": {
-    "start": "node build/src/main.js",
-    "clean": "rimraf coverage build tmp",
-    "prebuild": "npm run lint",
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -w -p tsconfig.build.json",
-    "lint": "eslint . --ext .ts",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch"
-  },
-  "author": "Ankur Dutta <bloodred17@users.noreply.github.com>",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "tslib": "~2.3.1"
   },
   "volta": {
     "node": "16.13.0"
