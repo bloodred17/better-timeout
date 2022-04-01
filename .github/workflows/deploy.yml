@@ -1,6 +1,9 @@
-name: Node.js CI
+name: Deploy CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -15,6 +18,7 @@ jobs:
     - run: npm run build
       env:
         CI: true
-#    - uses: JS-DevTools/npm-publish@v1
-#      with:
-#        token: ${{ secrets.NPM_TOKEN }}
+    - uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
+        package: "./dist/simple-timeout/package.json"
