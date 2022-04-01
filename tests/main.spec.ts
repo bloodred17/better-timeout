@@ -44,7 +44,7 @@ describe('Timeout instance', () => {
         expect(message).toBe(timeoutMessage);
       }
     });
-    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     await delay(3000);
     await expect(timeout.status).toBe('triggered');
   });
