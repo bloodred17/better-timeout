@@ -27,5 +27,5 @@ import { readFile, writeFile, copyFile } from 'fs/promises';
     { flag: 'w+' }
   );
   // await copyFile('./LICENSE', './dist/simple-timeout/LICENSE');
-  await copyFile('./LICENSE', './dist/simple-timeout/README.md');
+  await copyFile('./README.md', './dist/simple-timeout/README.md');
 })()

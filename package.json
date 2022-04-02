@@ -13,7 +13,7 @@
     "url" : "https://github.com/bloodred17/simple-timeout/issues",
     "email" : "ankur@shipthis.co"
   },
-  "license": "Apache-2.0",
+  "license": "MIT",
   "author": "Ankur Dutta <ankur@shipthis.co>",
   "contributors": [
     {
