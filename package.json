@@ -1,6 +1,6 @@
 {
   "name": "simple-timeout",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Simple timeout for easy handling in Node.js developed in TypeScript.",
   "keywords": [
     "timeout",

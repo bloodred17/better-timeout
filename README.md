@@ -77,9 +77,11 @@ Returns a promise wrapper on `setTimeout`.
 ### Timeout Clear
 
 ```typescript
+timeout.clear() 
+// OR
 timeout.clear(({status, timeoutMessage}) => {})
 ```
-Clears the timeout.
+Clears the timeout. It takes an optional callback function as an argument.
 
 ## Motivation
 
