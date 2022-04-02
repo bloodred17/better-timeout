@@ -29,6 +29,7 @@
     "type": "git",
     "url": "https://github.com/bloodred17/simple-timeout.git"
   },
+  "type": "module",
   "scripts": {
     "start": "node build/src/main.js",
     "clean": "rimraf coverage build tmp",
@@ -36,7 +37,7 @@
     "build": "tsc -p tsconfig.build.json",
     "postbuild": "node ./scripts/pre-publish",
     "build:watch": "tsc -w -p tsconfig.build.json",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint ./src --ext .ts",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },

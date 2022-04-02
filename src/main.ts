@@ -10,15 +10,17 @@ export type Callback<T> = (arg: CallbackArgs) => T | Promise<T>;
 export interface TimeoutOptions<T> {
   callbackFn?: Callback<T>,
   timeoutMessage?: string,
+  nullSubscription?: boolean,
 }
 
 export class Timeout<T = void> {
   private _status: Status = 'unset';
   private timeout: NodeJS.Timeout;
-  private readonly wrapper: Promise<CallbackArgs>;
+  private wrapper: Promise<CallbackArgs>;
   private readonly _timeoutOptions: TimeoutOptions<any> = {
     timeoutMessage: 'TIMEOUT',
     callbackFn: undefined,
+    nullSubscription: false,
   };
 
   constructor(timeMs: number, timeoutOptions?: TimeoutOptions<T>) {
@@ -59,6 +61,9 @@ export class Timeout<T = void> {
   clear<T>(onClear?: (arg: { status: string, timeoutMessage: string }) => T | Promise<T>) {
     if (this._status === 'set') {
       clearTimeout(this.timeout);
+      if (this._timeoutOptions.nullSubscription) {
+        this.wrapper = null;
+      }
       this._status = 'cleared';
       if (onClear) {
         onClear({
