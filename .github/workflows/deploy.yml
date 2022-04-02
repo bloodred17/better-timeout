@@ -18,6 +18,7 @@ jobs:
     - run: npm run build
       env:
         CI: true
+    - run: touch ./dist/simple-timeout/.npmignore
     - uses: JS-DevTools/npm-publish@v1
       with:
         token: ${{ secrets.NPM_TOKEN }}

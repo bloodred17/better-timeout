@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "target": "ES2020",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "declaration": true,
     "removeComments": true,
     "rootDir": "./src",

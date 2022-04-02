@@ -1,32 +1,35 @@
-export type Callback = (timeoutMessage: string) => void | Promise<void>;
+export type Status = 'unset' | 'set' | 'cleared' | 'triggered';
 
-export interface TimeoutOptions {
-  callbackFn?: Callback,
+export interface CallbackArgs {
+  status: Status,
+  timeoutMessage: string
+}
+
+export type Callback<T> = (arg: CallbackArgs) => T | Promise<T>;
+
+export interface TimeoutOptions<T> {
+  callbackFn?: Callback<T>,
   timeoutMessage?: string,
 }
 
-export class Timeout {
-  private _status: 'unset' | 'set' | 'cleared' | 'triggered' = 'unset';
+export class Timeout<T = void> {
+  private _status: Status = 'unset';
   private timeout: NodeJS.Timeout;
-  private readonly wrapper: Promise<string>;
-  private _timeoutOptions: TimeoutOptions;
+  private readonly wrapper: Promise<CallbackArgs>;
+  private readonly _timeoutOptions: TimeoutOptions<any> = {
+    timeoutMessage: 'TIMEOUT',
+    callbackFn: undefined,
+  };
 
-  constructor(timeMs: number, timeoutOptions?: TimeoutOptions) {
+  constructor(timeMs: number, timeoutOptions?: TimeoutOptions<T>) {
     if (timeoutOptions) {
-      this._timeoutOptions = timeoutOptions;
+      this._timeoutOptions = { ...this._timeoutOptions, ...timeoutOptions };
     }
-    this._timeoutOptions = {};
-    this._timeoutOptions.timeoutMessage = this._timeoutOptions?.timeoutMessage || 'TIMEOUT';
-
     this.wrapper = this.timeoutSetter(timeMs);
 
     if (this._timeoutOptions?.callbackFn) {
       this.wrapper
-        .then((timeoutMessage: string) => {
-          console.log(timeoutMessage);
-          return timeoutMessage;
-        })
-        .then((timeoutMessage: string) => this._timeoutOptions?.callbackFn(timeoutMessage))
+        .then((args: CallbackArgs) => this._timeoutOptions?.callbackFn(args))
         .catch((e) => console.log(e));
     }
   }
@@ -35,31 +38,38 @@ export class Timeout {
     return this._status;
   }
 
-  private timeoutSetter(timeMs: number): Promise<string> {
-    return new Promise<string>((resolve) => {
-      this.timeout = setTimeout(() => {
-        this._status = 'triggered';
-        resolve(this._timeoutOptions?.timeoutMessage);
-      }, timeMs);
-      this._status = 'set';
+  private timeoutSetter(timeMs: number): Promise<CallbackArgs> {
+    return new Promise<CallbackArgs>((resolve) => {
+      if (this._status === 'unset') {
+        this.timeout = setTimeout(() => {
+          if (this._status === 'set') {
+            this._status = 'triggered';
+            const args: CallbackArgs = {
+              status: this._status,
+              timeoutMessage: this._timeoutOptions.timeoutMessage,
+            }
+            resolve(args);
+          }
+        }, timeMs);
+        this._status = 'set';
+      }
     });
   }
 
-  clear(onClear?: () => void) {
+  clear<T>(onClear?: (arg: { status: string, timeoutMessage: string }) => T | Promise<T>) {
     if (this._status === 'set') {
       clearTimeout(this.timeout);
       this._status = 'cleared';
       if (onClear) {
-        onClear();
+        onClear({
+          status: this.status,
+          timeoutMessage: this._timeoutOptions.timeoutMessage
+        });
       }
     }
   }
 
-  onResolve(): Promise<string> {
-    if (this._status === 'set') {
-      return this.wrapper;
-    } else {
-      throw new Error('onResolve cannot be used before the timeout status is "set"');
-    }
+  subscribe(): Promise<CallbackArgs> {
+    return this.wrapper;
   }
 }
