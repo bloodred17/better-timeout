@@ -1,19 +1,100 @@
-# better-timeout
+# simple-timeout
+
+Simple, intuitive, timeout library. Easy to use, not a simple promise wrapper, not overloaded with fancy utilities.
 
 [![TypeScript version][ts-badge]][typescript-4-6]
 [![Node.js version][nodejs-badge]][nodejs]
-[![APLv2][license-badge]][license]
+[![MIT][license-badge]][license]
 [![Build Status - GitHub Actions][gha-badge]][gha-ci]
 
-🤲 Free as in speech: available under the APLv2 license.
 
 ## Getting Started
 
-This project is intended to be used with the latest Active LTS release of [Node.js][nodejs].
+```shell
+npm install simple-timeout
+```
+
+## Usage
+
+```typescript
+// Initialization
+const timeout = new Timeout(5000);
+
+// On trigger
+timeout.subscribe().then(() => {
+  // your code here
+})
+
+// Clear
+timeout.clear()
+```
+
+### Timeout options
+
+```typescript
+const timeout = new Timeout(5000, timeoutOptions)
+```
+
+- timeoutMessage (optional) : System Out message when timeout is triggered.
+- callbackFn (optional): Callback function called when the timeout is triggered. 
+  `status` and `timeoutMessage` are accessible via the arguments of the callback function.
+```typescript
+const timeout = new Timeout(5000, {
+  callbackFn: ({ status, timeoutMessage }) => {
+    // Your code here
+  }
+})
+
+const timeout_two = new Timeout<number>(2000, (args) => (args.status === 'triggered') ? 1 : 2);
+```
+- nullSubscription (optional): Setting it to true make the `timeout.subscribe()` return `null`
+    when the timeout is cleared.
+
+> Note: When you provide the `callbackFn` in the `timeoutOptions`,
+    it internally subscribes to the promise and provides the callback function to the `then`
+    block. It is a shorthand for `timeout.subscribe().then(() => {})`
+
+### Timeout Status
+
+```typescript
+Status = 'unset' | 'set' | 'cleared' | 'triggered'
+```
+- `unset` is the default state.
+- Timeout status is switched to `set` when it is initialized.
+- `triggered`is set when the timeout is triggered.
+- `cleared` is set when timeout is cleared.
+
+### Timeout Subscribe
+
+```typescript
+timeout.subscribe()
+  .then(({status, timeoutMessage}) => {
+  // your code here
+})
+```
+Returns a promise wrapper on `setTimeout`.
+
+### Timeout Clear
+
+```typescript
+timeout.clear(({status, timeoutMessage}) => {})
+```
+Clears the timeout.
+
+## Motivation
+
+The idea for the library came about while I was working on a data gathering project that relies on scraping. For normal usage 
+Puppeteer timeouts would suffice, but I kept on running into some advanced cases where I had to use native timeouts. Unfortunately,
+managing the native timeouts was a pain in the a** to deal with. Hence, this `simple-timeout` was the solution to the problem I was facing.
+I decided to separate it from the main project and make it into a library when I had other use cases for it. ***This library will be maintained
+as long as it's parent project is maintained.***
+
+## PRs are welcome
+Feel free to raise Issues and PRs addressing bugfixes. I don't plan for this project to be too bloated with features.
 
 ## License
 
-Licensed under the APLv2. See the [LICENSE](https://github.com/jsynowiec/node-typescript-boilerplate/blob/main/LICENSE) file for details.
+Licensed under the MIT. See the [LICENSE](https://github.com/bloodred17/simple-timeout/blob/main/LICENSE) file for details.
 
 [ts-badge]: https://img.shields.io/badge/TypeScript-4.6-blue.svg
 [nodejs-badge]: https://img.shields.io/badge/Node.js->=%2016.13-blue.svg
@@ -22,7 +103,7 @@ Licensed under the APLv2. See the [LICENSE](https://github.com/jsynowiec/node-ty
 [gha-ci]: https://github.com/jsynowiec/node-typescript-boilerplate/actions/workflows/nodejs.yml
 [typescript]: https://www.typescriptlang.org/
 [typescript-4-6]: https://devblogs.microsoft.com/typescript/announcing-typescript-4-6/
-[license-badge]: https://img.shields.io/badge/license-APLv2-blue.svg
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license]: https://github.com/bloodred17/better-timeout/blob/main/LICENSE
 [sponsor-badge]: https://img.shields.io/badge/♥-Sponsor-fc0fb5.svg
 [jest]: https://facebook.github.io/jest/

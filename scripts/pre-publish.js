@@ -26,5 +26,6 @@ import { readFile, writeFile, copyFile } from 'fs/promises';
     JSON.stringify(libraryPackageObj, undefined, 2),
     { flag: 'w+' }
   );
-  await copyFile('./LICENSE', './dist/simple-timeout/LICENSE');
+  // await copyFile('./LICENSE', './dist/simple-timeout/LICENSE');
+  await copyFile('./LICENSE', './dist/simple-timeout/README.md');
 })()

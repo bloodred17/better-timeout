@@ -58,7 +58,7 @@ export class Timeout<T = void> {
     });
   }
 
-  clear<T>(onClear?: (arg: { status: string, timeoutMessage: string }) => T | Promise<T>) {
+  clear<Y>(onClear?: (arg: { status: string, timeoutMessage: string }) => Y | Promise<Y>) {
     if (this._status === 'set') {
       clearTimeout(this.timeout);
       if (this._timeoutOptions.nullSubscription) {
