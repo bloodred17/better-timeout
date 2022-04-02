@@ -1,5 +1,4 @@
-import { CallbackArgs } from '../dist/simple-timeout';
-import { Timeout } from '../src/main';
+import { Timeout, CallbackArgs } from '../src/main';
 
 describe('Timeout instance', () => {
   let defaultTimeout: Timeout;
