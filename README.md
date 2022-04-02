@@ -58,6 +58,8 @@ const timeout_two = new Timeout<number>(2000, (args) => (args.status === 'trigge
 
 ```typescript
 Status = 'unset' | 'set' | 'cleared' | 'triggered'
+
+console.log(timeout.status) // Gives the current status of the timeout 
 ```
 - `unset` is the default state.
 - Timeout status is switched to `set` when it is initialized.
